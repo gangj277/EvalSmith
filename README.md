@@ -1,7 +1,7 @@
 # EvalSmith
 
 <p align="center">
-  <img src="assets/readme/evalsmith-hero-web.png" alt="EvalSmith forensic evaluation workflow banner" width="100%">
+  <img src=".github/readme/evalsmith-hero-web.png" alt="EvalSmith forensic evaluation workflow banner" width="100%">
 </p>
 
 <p align="center">
@@ -49,9 +49,11 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 ├── PRD.md
 ├── agents/
 │   └── openai.yaml
-├── assets/
-│   └── readme/
-│       └── evalsmith-hero-web.png
+├── .github/
+│   ├── readme/
+│   │   └── evalsmith-hero-web.png
+│   └── workflows/
+│       └── ci.yml
 ├── docs/
 │   └── plans/
 ├── references/
@@ -102,4 +104,4 @@ See [references/research-foundations.md](references/research-foundations.md).
 
 ## Status
 
-This repository currently packages the first OSS-ready skill definition, method references, and bootstrap tooling for the EvalSmith concept described in [PRD.md](PRD.md).
+This repository currently packages the first OSS-ready skill definition, method references, bootstrap tooling, and README visuals for the EvalSmith concept described in [PRD.md](PRD.md).
