@@ -1,0 +1,4 @@
+interface:
+  display_name: "EvalSmith"
+  short_description: "Workflow-aware LLM eval engineering"
+  default_prompt: "Use $evalsmith to inspect a repo LLM workflow, scaffold the right eval harness, and propose evidence-backed prompt or workflow fixes."

@@ -10,6 +10,8 @@
 
 EvalSmith is an open-source coding-agent skill for grounded prompt and workflow evaluation inside real LLM product repositories.
 
+The canonical installable skill package lives at `skills/evalsmith/`.
+
 Instead of giving generic prompt advice, EvalSmith is designed to help an agent:
 
 - inspect the repository and infer the real LLM workflow
@@ -46,7 +48,6 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 ```text
 .
 ├── SKILL.md
-├── PRD.md
 ├── agents/
 │   └── openai.yaml
 ├── .github/
@@ -56,20 +57,62 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 │       └── ci.yml
 ├── docs/
 │   └── plans/
+├── PRD.md
+├── README.md
 ├── references/
 │   ├── artifact-contract.md
 │   ├── evalsmith-method.md
 │   ├── forensic-analysis.md
 │   └── research-foundations.md
 ├── scripts/
-│   └── bootstrap_evalsmith.py
+│   ├── bootstrap_evalsmith.py
+│   ├── install_evalsmith.py
+│   └── validate_packaged_skill.py
+├── skills/
+│   └── evalsmith/
+│       ├── SKILL.md
+│       ├── agents/
+│       ├── references/
+│       └── scripts/
 └── tests/
-    └── test_bootstrap_evalsmith.py
+    ├── test_bootstrap_evalsmith.py
+    └── test_install_evalsmith.py
 ```
 
-## Quick Start
+## Install
 
-Use the repository root as the skill root.
+### Codex
+
+After cloning the repo:
+
+```bash
+python scripts/install_evalsmith.py --target codex
+```
+
+This installs the packaged skill into `~/.codex/skills/evalsmith`.
+
+If you prefer using Codex's GitHub skill installer, install from the canonical package path:
+
+```bash
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+python "$CODEX_HOME/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --repo gangj277/EvalSmith \
+  --path skills/evalsmith
+```
+
+### Claude Code
+
+After cloning the repo:
+
+```bash
+python scripts/install_evalsmith.py --target claude
+```
+
+This installs the packaged skill into `~/.claude/skills/evalsmith`.
+
+Claude Code also supports project-local skills at `.claude/skills/<skill-name>/SKILL.md` and personal skills at `~/.claude/skills/<skill-name>/SKILL.md`. This repo packages the exact folder you would copy there: `skills/evalsmith/`.
+
+## Use
 
 Example invocation:
 
@@ -77,7 +120,7 @@ Example invocation:
 Use $evalsmith to inspect this repo's LLM feature, create the right eval plan, scaffold repo-native evals, and propose evidence-backed prompt fixes.
 ```
 
-If you want a starter artifact layout in a target repository:
+If you want a starter artifact layout in a target repository after installation:
 
 ```bash
 python scripts/bootstrap_evalsmith.py /path/to/target-repo \
@@ -104,4 +147,4 @@ See [references/research-foundations.md](references/research-foundations.md).
 
 ## Status
 
-This repository currently packages the first OSS-ready skill definition, method references, bootstrap tooling, and README visuals for the EvalSmith concept described in [PRD.md](PRD.md).
+This repository packages the first OSS-ready EvalSmith skill distribution for Claude Code and Codex, along with the method references, bootstrap tooling, and README visuals for the concept described in [PRD.md](PRD.md).
