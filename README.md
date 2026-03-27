@@ -10,7 +10,8 @@
 
 EvalSmith is an open-source coding-agent skill for grounded prompt and workflow evaluation inside real LLM product repositories.
 
-The canonical installable skill package lives at `skills/evalsmith/`.
+The canonical direct-install skill package lives at `skills/evalsmith/`.
+The repository root is also packaged as a Claude Code plugin and marketplace.
 
 Instead of giving generic prompt advice, EvalSmith is designed to help an agent:
 
@@ -47,6 +48,9 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 
 ```text
 .
+├── .claude-plugin/
+│   ├── marketplace.json
+│   └── plugin.json
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
@@ -81,6 +85,18 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 
 ## Install
 
+### Claude Code Marketplace
+
+Recommended install path:
+
+```text
+/plugin marketplace add gangj277/EvalSmith
+/plugin install evalsmith@evalsmith
+```
+
+This repo publishes a marketplace named `evalsmith` and a plugin named `evalsmith`.
+After install, Claude Code can auto-invoke the skill when the task matches, and you can explicitly test it with `/evalsmith:evalsmith`.
+
 ### Codex
 
 After cloning the repo:
@@ -102,7 +118,7 @@ python "$CODEX_HOME/skills/.system/skill-installer/scripts/install-skill-from-gi
 
 ### Claude Code
 
-After cloning the repo:
+If you want a direct standalone skill install instead of the marketplace plugin:
 
 ```bash
 python scripts/install_evalsmith.py --target claude
@@ -111,6 +127,11 @@ python scripts/install_evalsmith.py --target claude
 This installs the packaged skill into `~/.claude/skills/evalsmith`.
 
 Claude Code also supports project-local skills at `.claude/skills/<skill-name>/SKILL.md` and personal skills at `~/.claude/skills/<skill-name>/SKILL.md`. This repo packages the exact folder you would copy there: `skills/evalsmith/`.
+For local plugin development, you can also point Claude Code directly at this repo root:
+
+```bash
+claude --plugin-dir /path/to/EvalSmith
+```
 
 ## Use
 
@@ -147,4 +168,9 @@ See [references/research-foundations.md](references/research-foundations.md).
 
 ## Status
 
-This repository packages the first OSS-ready EvalSmith skill distribution for Claude Code and Codex, along with the method references, bootstrap tooling, and README visuals for the concept described in [PRD.md](PRD.md).
+This repository now supports two distribution paths for the same EvalSmith capability:
+
+- direct skill installation from `skills/evalsmith/` for Codex and standalone Claude skills
+- Claude Code marketplace installation from the repo-level `.claude-plugin/marketplace.json`
+
+That keeps the skill repo-native while making Claude installation one command away from a shared marketplace catalog.

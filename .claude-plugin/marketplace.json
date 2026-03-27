@@ -1,0 +1,41 @@
+{
+  "name": "evalsmith",
+  "owner": {
+    "name": "Jimin Kang",
+    "email": "gangj277@gmail.com"
+  },
+  "metadata": {
+    "description": "Marketplace for installing the EvalSmith forensic LLM evaluation plugin.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "evalsmith",
+      "source": "./",
+      "description": "Grounded forensic evaluation engineering for prompts, context, retrieval, tools, and multi-stage LLM workflows.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jimin Kang",
+        "email": "gangj277@gmail.com"
+      },
+      "homepage": "https://github.com/gangj277/EvalSmith",
+      "repository": "https://github.com/gangj277/EvalSmith",
+      "license": "MIT",
+      "keywords": [
+        "llm-evals",
+        "prompt-engineering",
+        "forensic-analysis",
+        "claude-code",
+        "codex",
+        "agent-skills"
+      ],
+      "category": "Developer Tools",
+      "tags": [
+        "llm-evals",
+        "prompt-forensics",
+        "workflow-analysis",
+        "repo-native"
+      ]
+    }
+  ]
+}

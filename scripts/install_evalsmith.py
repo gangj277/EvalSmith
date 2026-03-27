@@ -14,13 +14,16 @@ SKILL_SOURCE = REPO_ROOT / "skills" / "evalsmith"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Install the packaged EvalSmith skill into a Codex or Claude Code skills directory."
+        description=(
+            "Install the packaged EvalSmith skill into a Codex or standalone Claude Code skills directory. "
+            "For Claude marketplace installation, use the repo's plugin marketplace instead."
+        )
     )
     parser.add_argument(
         "--target",
         required=True,
         choices=["codex", "claude", "both"],
-        help="Which client to install the skill for.",
+        help="Which direct-install client to install the skill for.",
     )
     parser.add_argument(
         "--dest-base",
