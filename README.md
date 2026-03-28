@@ -60,7 +60,10 @@ For serious workflows, that means more than a benchmark score. EvalSmith is desi
 │   └── workflows/
 │       └── ci.yml
 ├── docs/
+│   ├── marketplace-readiness.md
 │   └── plans/
+├── examples/
+│   └── claude-settings.evalsmith.json
 ├── PRD.md
 ├── README.md
 ├── references/
@@ -96,18 +99,11 @@ Recommended install path:
 
 This repo publishes a marketplace named `evalsmith` and a plugin named `evalsmith`.
 After install, Claude Code can auto-invoke the skill when the task matches, and you can explicitly test it with `/evalsmith:evalsmith`.
+The repository is also prepared for Anthropic's official plugin submission flow. Details and the submission links are in [docs/marketplace-readiness.md](docs/marketplace-readiness.md).
 
 ### Codex
 
-After cloning the repo:
-
-```bash
-python scripts/install_evalsmith.py --target codex
-```
-
-This installs the packaged skill into `~/.codex/skills/evalsmith`.
-
-If you prefer using Codex's GitHub skill installer, install from the canonical package path:
+Native public install path:
 
 ```bash
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
@@ -115,6 +111,15 @@ python "$CODEX_HOME/skills/.system/skill-installer/scripts/install-skill-from-gi
   --repo gangj277/EvalSmith \
   --path skills/evalsmith
 ```
+
+Clone-based fallback:
+
+```bash
+python scripts/install_evalsmith.py --target codex
+```
+
+This installs the packaged skill into `~/.codex/skills/evalsmith`.
+This repository does not claim a public Codex marketplace listing; the native verified path is GitHub skill installation.
 
 ### Claude Code
 
@@ -132,6 +137,8 @@ For local plugin development, you can also point Claude Code directly at this re
 ```bash
 claude --plugin-dir /path/to/EvalSmith
 ```
+
+For team-wide rollout, start from [examples/claude-settings.evalsmith.json](examples/claude-settings.evalsmith.json) and merge it into your repository's `.claude/settings.json`.
 
 ## Use
 
@@ -170,7 +177,7 @@ See [references/research-foundations.md](references/research-foundations.md).
 
 This repository now supports two distribution paths for the same EvalSmith capability:
 
-- direct skill installation from `skills/evalsmith/` for Codex and standalone Claude skills
+- direct GitHub skill installation from `skills/evalsmith/` for Codex and standalone Claude skills
 - Claude Code marketplace installation from the repo-level `.claude-plugin/marketplace.json`
 
-That keeps the skill repo-native while making Claude installation one command away from a shared marketplace catalog.
+That keeps the packaging native to both platforms without pretending they share the same marketplace model.

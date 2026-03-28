@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "evalsmith": {
+      "source": {
+        "source": "github",
+        "repo": "gangj277/EvalSmith"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "evalsmith@evalsmith": true
+  }
+}

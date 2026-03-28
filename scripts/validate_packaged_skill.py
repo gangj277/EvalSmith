@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -17,6 +18,7 @@ REQUIRED_FILES = [
     "references/research-foundations.md",
     "scripts/bootstrap_evalsmith.py",
 ]
+SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 
 
 def parse_args() -> argparse.Namespace:
@@ -91,6 +93,10 @@ def load_json(path: Path) -> tuple[dict[str, object] | None, list[str]]:
         return None, [f"invalid JSON in {path}: {exc}"]
 
 
+def is_semver(value: object) -> bool:
+    return isinstance(value, str) and bool(SEMVER_RE.match(value))
+
+
 def validate_plugin_manifest(repo_root: Path) -> tuple[list[str], dict[str, object] | None]:
     manifest_path = repo_root / ".claude-plugin" / "plugin.json"
     manifest, errors = load_json(manifest_path)
@@ -103,6 +109,16 @@ def validate_plugin_manifest(repo_root: Path) -> tuple[list[str], dict[str, obje
     for field in ["description", "version", "homepage", "repository", "license"]:
         if field not in manifest:
             errors.append(f"{manifest_path} must include {field}")
+
+    author = manifest.get("author")
+    if not isinstance(author, dict) or "name" not in author or "url" not in author:
+        errors.append(f"{manifest_path} must include author.name and author.url")
+
+    if manifest.get("skills") != "./skills/":
+        errors.append(f"{manifest_path} skills path must be ./skills/")
+
+    if not is_semver(manifest.get("version")):
+        errors.append(f"{manifest_path} version must be semantic versioning")
 
     return errors, manifest
 
@@ -120,6 +136,13 @@ def validate_marketplace(repo_root: Path, manifest: dict[str, object] | None) ->
     if not isinstance(owner, dict) or "name" not in owner:
         errors.append(f"{marketplace_path} must include owner.name")
 
+    metadata = marketplace.get("metadata")
+    if not isinstance(metadata, dict):
+        errors.append(f"{marketplace_path} must include metadata")
+    else:
+        if not is_semver(metadata.get("version")):
+            errors.append(f"{marketplace_path} metadata.version must be semantic versioning")
+
     plugins = marketplace.get("plugins")
     if not isinstance(plugins, list) or not plugins:
         errors.append(f"{marketplace_path} must include at least one plugin entry")
@@ -132,13 +155,23 @@ def validate_marketplace(repo_root: Path, manifest: dict[str, object] | None) ->
 
     if first_plugin.get("name") != "evalsmith":
         errors.append(f"{marketplace_path} plugin name must be evalsmith")
-    if first_plugin.get("source") != "./":
-        errors.append(f"{marketplace_path} plugin source must be ./")
+    source = first_plugin.get("source")
+    if not isinstance(source, dict):
+        errors.append(f"{marketplace_path} plugin source must be a GitHub source object")
+    else:
+        if source.get("source") != "github":
+            errors.append(f"{marketplace_path} plugin source.source must be github")
+        if source.get("repo") != "gangj277/EvalSmith":
+            errors.append(f"{marketplace_path} plugin source.repo must be gangj277/EvalSmith")
+        if source.get("ref") != "v0.1.1":
+            errors.append(f"{marketplace_path} plugin source.ref must be v0.1.1")
 
-    if manifest is not None and first_plugin.get("version") != manifest.get("version"):
-        errors.append(
-            f"{marketplace_path} plugin version must match .claude-plugin/plugin.json"
-        )
+    author = first_plugin.get("author")
+    if not isinstance(author, dict) or "url" not in author:
+        errors.append(f"{marketplace_path} plugin author.url is required")
+
+    if first_plugin.get("strict") is not True:
+        errors.append(f"{marketplace_path} plugin strict must be true")
 
     return errors
 

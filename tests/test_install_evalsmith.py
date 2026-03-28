@@ -12,6 +12,7 @@ VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate_packaged_skill.py"
 CANONICAL_SKILL_DIR = REPO_ROOT / "skills" / "evalsmith"
 CLAUDE_PLUGIN_MANIFEST = REPO_ROOT / ".claude-plugin" / "plugin.json"
 CLAUDE_MARKETPLACE = REPO_ROOT / ".claude-plugin" / "marketplace.json"
+CLAUDE_SETTINGS_EXAMPLE = REPO_ROOT / "examples" / "claude-settings.evalsmith.json"
 
 
 class InstallEvalSmithTests(unittest.TestCase):
@@ -49,10 +50,25 @@ class InstallEvalSmithTests(unittest.TestCase):
         marketplace = json.loads(CLAUDE_MARKETPLACE.read_text())
 
         self.assertEqual(manifest["name"], "evalsmith")
+        self.assertEqual(manifest["version"], "0.1.1")
+        self.assertEqual(manifest["skills"], "./skills/")
+        self.assertEqual(manifest["author"]["url"], "https://github.com/gangj277")
         self.assertEqual(marketplace["name"], "evalsmith")
         self.assertEqual(marketplace["plugins"][0]["name"], "evalsmith")
-        self.assertEqual(marketplace["plugins"][0]["source"], "./")
-        self.assertEqual(marketplace["plugins"][0]["version"], manifest["version"])
+        self.assertEqual(marketplace["metadata"]["version"], "0.1.1")
+        self.assertEqual(marketplace["plugins"][0]["source"]["source"], "github")
+        self.assertEqual(marketplace["plugins"][0]["source"]["repo"], "gangj277/EvalSmith")
+        self.assertEqual(marketplace["plugins"][0]["source"]["ref"], "v0.1.1")
+        self.assertTrue(marketplace["plugins"][0]["strict"])
+
+    def test_claude_team_settings_example_exists(self) -> None:
+        self.assertTrue(CLAUDE_SETTINGS_EXAMPLE.exists())
+        settings = json.loads(CLAUDE_SETTINGS_EXAMPLE.read_text())
+        self.assertEqual(
+            settings["extraKnownMarketplaces"]["evalsmith"]["source"]["repo"],
+            "gangj277/EvalSmith",
+        )
+        self.assertTrue(settings["enabledPlugins"]["evalsmith@evalsmith"])
 
     def test_installs_to_codex_destination(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

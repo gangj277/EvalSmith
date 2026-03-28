@@ -1,14 +1,16 @@
 {
   "name": "evalsmith",
   "description": "Grounded forensic evaluation engineering for prompts, context, retrieval, tools, and multi-stage LLM workflows.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Jimin Kang",
-    "email": "gangj277@gmail.com"
+    "email": "gangj277@gmail.com",
+    "url": "https://github.com/gangj277"
   },
   "homepage": "https://github.com/gangj277/EvalSmith",
   "repository": "https://github.com/gangj277/EvalSmith",
   "license": "MIT",
+  "skills": "./skills/",
   "keywords": [
     "llm-evals",
     "prompt-engineering",
